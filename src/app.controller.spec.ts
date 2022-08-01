@@ -1,4 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { KafkaModule } from './kafka/kafka.module';
@@ -9,16 +10,20 @@ describe('AppController', () => {
 
   beforeAll(async () => {
     app = await Test.createTestingModule({
-      imports: [KafkaModule],
+      imports: [KafkaModule, ConfigModule.forRoot()],
       controllers: [AppController],
       providers: [AppService, TestConsumer],
     }).compile();
   });
 
-  describe('getHello', () => {
-    it('should return "Hello World!"', () => {
+  describe('send notification', () => {
+    it('should return "Notification Sent!"', async () => {
       const appController = app.get<AppController>(AppController);
-      expect(appController.getHello()).toBe('Hello World!');
+      expect(
+        await appController.sendNotification({ message: 'Hello World!' }),
+      ).toBe({
+        message: 'Notification Sent!',
+      });
     });
   });
 });

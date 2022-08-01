@@ -5,15 +5,14 @@ import { ProducerService } from './kafka';
 export class AppService {
   constructor(private readonly producerService: ProducerService) {}
 
-  async getHello() {
+  async sendNotification(message: string) {
     await this.producerService.produce({
       topic: 'test',
       messages: [
         {
-          value: 'Hello World!',
+          value: message,
         },
       ],
     });
-    return 'Hello World!';
   }
 }
