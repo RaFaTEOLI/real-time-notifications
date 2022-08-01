@@ -8,7 +8,7 @@ import { Kafka, Producer, ProducerRecord, Partitioners } from 'kafkajs';
 @Injectable()
 export class ProducerService implements OnModuleInit, OnApplicationShutdown {
   private readonly kafka = new Kafka({
-    brokers: ['127.0.0.1:9092'],
+    brokers: [process.env.KAFKA_BROKER],
   });
   private readonly producer: Producer = this.kafka.producer({
     createPartitioner: Partitioners.DefaultPartitioner,
