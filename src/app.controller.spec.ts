@@ -16,14 +16,10 @@ describe('AppController', () => {
     }).compile();
   });
 
-  describe('send notification', () => {
-    it('should return "Notification Sent!"', async () => {
+  describe('get hello world', () => {
+    it('should return "Hello World!"', async () => {
       const appController = app.get<AppController>(AppController);
-      expect(
-        await appController.sendNotification({ message: 'Hello World!' }),
-      ).toBe({
-        message: 'Notification Sent!',
-      });
+      expect(await appController.getHello()).toBe('Hello World!');
     });
   });
 });
