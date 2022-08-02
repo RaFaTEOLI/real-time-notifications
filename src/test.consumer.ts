@@ -1,7 +1,15 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import { ConsumerService } from './kafka';
 import { WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
-import { uuid } from 'uuidv4';
+import { v4 } from 'uuid';
+
+type Notification = {
+  message: string;
+  user: {
+    name: string;
+    email: string;
+  };
+};
 
 @WebSocketGateway({ cors: true })
 @Injectable()
@@ -15,10 +23,13 @@ export class TestConsumer implements OnModuleInit {
       { topics: ['test'] },
       {
         eachMessage: async ({ topic, partition, message }) => {
-          // this.server.emit(topic, message);
+          const notification = JSON.parse(
+            message.value.toString(),
+          ) as Notification;
           this.server.emit('notifications', {
-            id: uuid(),
-            message: message.value.toString(),
+            id: v4(),
+            message: notification.message,
+            user: notification.user,
           });
           console.log({
             value: message.value.toString(),

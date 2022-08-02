@@ -13,7 +13,7 @@ export class AppController {
 
   @Post()
   async sendNotification(@Body() sendNotificationDTO: SendNotificationDTO) {
-    await this.appService.sendNotification(sendNotificationDTO.message);
+    await this.appService.sendNotification(sendNotificationDTO);
     return { message: 'Notification Sent!' };
   }
 }
